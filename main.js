@@ -2,9 +2,7 @@
 const clockEl = document.querySelector("#time")
 const greetingEl = document.querySelector("#greeting")
 const nameEl = document.querySelector("#name")
-
-//Create time
-
+const quoteEl = document.querySelector("#quote")
 
 //Add time to DOM
 function addTime () {
@@ -55,8 +53,28 @@ function getName(){
     }
 }
 
+//Quote 
+const getQuote = async() => {
+    const response = await fetch("https://quotes.rest/qod?category=inspire")
+    if (response.status === 200) {
+       const data = await response.json()
+       return data
+    } else {
+        throw new Error("unable to get puzzle")
+    }
+}
+
+//Display quote
+const displayQuote = () => {
+    getQuote().then((quote) => {
+        quoteEl.textContent = quote.contents.quotes[0].quote
+    }).catch ((err) => {
+        console.log(err)
+    })
+}
+
 //Run
 addTime()
 changeGreeting()
 getName()
-
+displayQuote()
